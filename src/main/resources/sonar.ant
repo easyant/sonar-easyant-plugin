@@ -21,8 +21,21 @@
     <target name="sonar:init">
         <ea:parameter property="sonar.project.key" default="${ivy.organisation}.${ivy.module}" description="sonar's project key" />
         <ea:parameter property="sonar.project.version" default="${ivy.version}" description="version used to identify sonar audit" />
+        <ea:parameter property="sonar.sources" default="${basedir}/src" description="list of source directories separated by a comma" />
+ 
+        <!-- list of optional Sonar properties -->
+        <!--
+        <property name="sonar.projectName" value="this value overrides the name defined in Ant root node" />
+        <property name="sonar.binaries" value="list of directories which contain for example the Java bytecode" />
+        <property name="sonar.tests" value="list of test source directories separated by a comma" />
+        <property name="sonar.libraries" value="list of paths to libraries separated by a comma (These libraries are for example used by the Sonar Findbugs plugin)" />
+        -->
         <taskdef resource="org/sonar/ant/antlib.xml" classpathref="org.apache.easyant.plugins#sonar.classpath" />
 
+     </target>
+     
+     <target name="sonar:sonar" depends="sonar:init">
+        <sonar key="${sonar.project.key}" version="${sonar.project.version}" />
      </target>
 
  </project>

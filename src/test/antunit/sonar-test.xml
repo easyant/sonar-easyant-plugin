@@ -41,5 +41,12 @@
     <target name="test-sonar:init" depends="sonar:init">
         <au:assertPropertyEquals name="sonar.project.key" value="${ivy.organisation}.${ivy.module}"/>
         <au:assertPropertyEquals name="sonar.project.version" value="${ivy.version}"/>
+        <au:assertPropertyEquals name="sonar.sources" value="${basedir}/src"/>
+    </target>
+   
+    <target name="test-sonar:sonar">
+        <au:expectfailure expectedmessage="org.sonar.batch.bootstrapper.BootstrapException: Connection refused">
+            <antcall target="sonar:sonar"/>
+        </au:expectfailure>
     </target>
 </project>

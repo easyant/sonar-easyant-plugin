@@ -31,6 +31,6 @@
         <artifact type="xsl"/>
     </publications>
     <dependencies>
-        <dependency org="org.codehaus.sonar-plugins" name="sonar-ant-task" rev="1.5" conf="default->default"/>
+        <dependency org="org.codehaus.sonar-plugins" name="sonar-ant-task" rev="1.4" conf="default->default"/>
     </dependencies>
 </ivy-module>
