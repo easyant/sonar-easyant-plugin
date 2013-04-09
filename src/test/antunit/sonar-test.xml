@@ -34,7 +34,11 @@
         </delete>
     </target>
     
-    <target name="setUp" depends="clean"/>
+    <target name="setUp" depends="clean">
+        <property name="ivy.organisation" value="org.mycompany"/>
+        <property name="ivy.module" value="mymodule"/>
+        <property name="ivy.version" value="1.0"/>
+    </target>
     <target name="tearDown" depends="clean"/>
     
     <!-- init test case -->         

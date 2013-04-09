@@ -22,14 +22,14 @@
         <ea:parameter property="sonar.projectKey" default="${ivy.organisation}.${ivy.module}" description="sonar's project key" />
         <ea:parameter property="sonar.projectVersion" default="${ivy.version}" description="version used to identify sonar audit" />
         <ea:parameter property="sonar.sources" default="${basedir}/src" description="list of source directories separated by a comma" />
+        <ea:parameter property="sonar.projectName" default="${ivy.organisation}.${ivy.module}" description="this value overrides the name defined in Ant root node"/>
  
         <!-- list of optional Sonar properties -->
-        <ea:parameter property="sonar.projectName" description="this value overrides the name defined in Ant root node" required="false"/>
         <ea:parameter property="sonar.binaries" description="list of directories which contain for example the Java bytecode" required="false"/>
         <ea:parameter property="sonar.tests" description="list of test source directories separated by a comma" required="false"/>
         <!-- see http://docs.codehaus.org/display/SONAR/Analysis+Parameters to have exhaustive list of properties available -->
 
-        <taskdef resource="org/sonar/ant/antlib.xml" classpathref="org.apache.easyant.plugins#sonar.classpath" required="false"/>
+        <taskdef resource="org/sonar/ant/antlib.xml" classpathref="org.apache.easyant.plugins#sonar.classpath" />
 
      </target>
      
