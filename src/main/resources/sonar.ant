@@ -19,23 +19,22 @@
     <ea:core-version requiredrevision="[0.9,+]" />
 
     <target name="sonar:init">
-        <ea:parameter property="sonar.project.key" default="${ivy.organisation}.${ivy.module}" description="sonar's project key" />
-        <ea:parameter property="sonar.project.version" default="${ivy.version}" description="version used to identify sonar audit" />
+        <ea:parameter property="sonar.projectKey" default="${ivy.organisation}.${ivy.module}" description="sonar's project key" />
+        <ea:parameter property="sonar.projectVersion" default="${ivy.version}" description="version used to identify sonar audit" />
         <ea:parameter property="sonar.sources" default="${basedir}/src" description="list of source directories separated by a comma" />
  
         <!-- list of optional Sonar properties -->
-        <!--
-        <property name="sonar.projectName" value="this value overrides the name defined in Ant root node" />
-        <property name="sonar.binaries" value="list of directories which contain for example the Java bytecode" />
-        <property name="sonar.tests" value="list of test source directories separated by a comma" />
-        <property name="sonar.libraries" value="list of paths to libraries separated by a comma (These libraries are for example used by the Sonar Findbugs plugin)" />
-        -->
-        <taskdef resource="org/sonar/ant/antlib.xml" classpathref="org.apache.easyant.plugins#sonar.classpath" />
+        <ea:parameter property="sonar.projectName" description="this value overrides the name defined in Ant root node" required="false"/>
+        <ea:parameter property="sonar.binaries" description="list of directories which contain for example the Java bytecode" required="false"/>
+        <ea:parameter property="sonar.tests" description="list of test source directories separated by a comma" required="false"/>
+        <!-- see http://docs.codehaus.org/display/SONAR/Analysis+Parameters to have exhaustive list of properties available -->
+
+        <taskdef resource="org/sonar/ant/antlib.xml" classpathref="org.apache.easyant.plugins#sonar.classpath" required="false"/>
 
      </target>
      
      <target name="sonar:sonar" depends="sonar:init">
-        <sonar key="${sonar.project.key}" version="${sonar.project.version}" />
+        <sonar/>
      </target>
 
  </project>

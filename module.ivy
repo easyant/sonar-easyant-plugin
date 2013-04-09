@@ -17,7 +17,7 @@
 <ivy-module version="2.0" xmlns:ea="http://www.easyant.org"> 
     <info organisation="org.apache.easyant.plugins" module="sonar" revision="0.9">
            <description>This module provides integration with sonar, a web based platform monitoring code quality.</description>
-           <ea:build organisation="org.apache.easyant.buildtypes" module="build-std-ant-plugin" revision="0.1"/>
+           <ea:build organisation="org.apache.easyant.buildtypes" module="build-std-ant-plugin" revision="0.9"/>
            <ea:plugin organisation="org.apache.easyant.plugins" module="antunit" revision="0.9"/>
         </info>
         <configurations>
@@ -31,6 +31,6 @@
         <artifact type="xsl"/>
     </publications>
     <dependencies>
-        <dependency org="org.codehaus.sonar-plugins" name="sonar-ant-task" rev="1.4" conf="default->default"/>
+        <dependency org="org.codehaus.sonar-plugins" name="sonar-ant-task" rev="2.0" conf="default->default"/>
     </dependencies>
 </ivy-module>
