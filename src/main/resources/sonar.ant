@@ -19,14 +19,26 @@
     <ea:core-version requiredrevision="[0.9,+]" />
 
     <target name="sonar:init">
-        <ea:parameter property="sonar.projectKey" default="${ivy.organisation}.${ivy.module}" description="sonar's project key" />
-        <ea:parameter property="sonar.projectVersion" default="${ivy.version}" description="version used to identify sonar audit" />
-        <ea:parameter property="sonar.sources" default="${basedir}/src" description="list of source directories separated by a comma" />
-        <ea:parameter property="sonar.projectName" default="${ivy.organisation}.${ivy.module}" description="this value overrides the name defined in Ant root node"/>
+        <ea:parameter property="sonar.host.url" default="http://localhost:9000" description="sonar server URL" />
+        <ea:parameter property="sonar.jdbc.driverClassName" default="org.h2.Driver" description="JDBC Driver used by Sonar"/>
+        <ea:parameter property="sonar.jdbc.url" default="jdbc:h2:tcp://localhost:9092/sonar" description="JDBC Connection URL" />
+        <ea:parameter property="sonar.jdbc.username" default="sonar" description="User for the JDBC Connection" />
+        <ea:parameter property="sonar.jdbc.password" default="sonar" description="Password for the JDBC Connection" />
+
+        <ea:parameter property="sonar.projectKey" default="${ivy.organisation}:${ivy.module}" description="The project key that is unique for each project." />
+        <ea:parameter property="sonar.projectVersion" default="${ivy.version}" description="The project version" />
+        <ea:parameter property="sonar.projectName" default="${sonar.projectKey}" description="Name of the project that will be displayed on the web interface"/>
+        <ea:parameter property="sonar.language" default="java" description="Sets the language of source code. If a Sonar plugin allows to analyze another language, the associated source code analyser can be activated with this property.
+The default language can be set at instance level: go to Configuration - General Settings - General and set the sonar.language property"/>
+        <ea:parameter property="sonar.sources" default="${basedir}/src" description="Comma-separated paths to directories containing sources" />
+        <ea:parameter property="sonar.importSources" default="true" description="Sometimes, for security or other reasons, project sources must not be stored and displayed" />
  
         <!-- list of optional Sonar properties -->
-        <ea:parameter property="sonar.binaries" description="list of directories which contain for example the Java bytecode" required="false"/>
-        <ea:parameter property="sonar.tests" description="list of test source directories separated by a comma" required="false"/>
+        <ea:parameter property="sonar.binaries" description="Comma-separated paths to directories containing binaries (in case of Java: directories with class files)" required="false"/>
+        <ea:parameter property="sonar.tests" description="Comma-separated paths to directories containing tests" required="false"/>
+        <ea:parameter property="sonar.sourceEncoding" description="Encoding of source files. Example of values: UTF-8, MacRoman, Shift_JIS. This property can be replaced by the standard property project.build.sourceEncoding in Maven projects.
+The list of available encodings depends on your JVM. See http://docs.oracle.com/javase/1.5.0/docs/guide/intl/encoding.doc.html" required="false"/>
+        <ea:parameter property="sonar.profile" description="Sometimes, for security or other reasons, project sources must not be stored and displayed" required="false"/>
         <!-- see http://docs.codehaus.org/display/SONAR/Analysis+Parameters to have exhaustive list of properties available -->
 
         <taskdef resource="org/sonar/ant/antlib.xml" classpathref="org.apache.easyant.plugins#sonar.classpath" />

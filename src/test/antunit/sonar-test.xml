@@ -43,13 +43,22 @@
     
     <!-- init test case -->         
     <target name="test-sonar:init" depends="sonar:init">
-        <au:assertPropertyEquals name="sonar.project.key" value="${ivy.organisation}.${ivy.module}"/>
-        <au:assertPropertyEquals name="sonar.project.version" value="${ivy.version}"/>
+        <au:assertPropertyEquals name="sonar.host.url" value="http://localhost:9000"/>
+        <au:assertPropertyEquals name="sonar.jdbc.driverClassName" value="org.h2.Driver"/>
+        <au:assertPropertyEquals name="sonar.jdbc.url" value="jdbc:h2:tcp://localhost:9092/sonar"/>
+        <au:assertPropertyEquals name="sonar.jdbc.username" value="sonar"/>
+        <au:assertPropertyEquals name="sonar.jdbc.password" value="sonar"/>
+
+        <au:assertPropertyEquals name="sonar.projectKey" value="${ivy.organisation}:${ivy.module}"/>
+        <au:assertPropertyEquals name="sonar.projectVersion" value="${ivy.version}"/>
+        <au:assertPropertyEquals name="sonar.projectName" value="${sonar.projectKey}"/>
+        <au:assertPropertyEquals name="sonar.language" value="java"/>
         <au:assertPropertyEquals name="sonar.sources" value="${basedir}/src"/>
+        <au:assertPropertyEquals name="sonar.importSources" value="true"/>
     </target>
    
     <target name="test-sonar:sonar">
-        <au:expectfailure expectedmessage="org.sonar.batch.bootstrapper.BootstrapException: Connection refused">
+        <au:expectfailure expectedmessage="java.lang.IllegalStateException: Fail to request server version">
             <antcall target="sonar:sonar"/>
         </au:expectfailure>
     </target>
