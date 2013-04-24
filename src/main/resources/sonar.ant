@@ -47,6 +47,17 @@ The list of available encodings depends on your JVM. See http://docs.oracle.com/
 
         <taskdef resource="org/sonar/ant/antlib.xml" classpathref="org.apache.easyant.plugins#sonar.classpath" />
 
+        <!-- calculate sonar.modules property dynamically -->
+        <fileset id="sonar.subproject.fileset" dir="${basedir}" includes="*/module.ivy"/>
+        <pathconvert pathsep="," property="sonar.modules" refid="sonar.subproject.fileset">
+            <globmapper from="${basedir}/*/module.ivy" to="*"/>
+        </pathconvert>
+     </target>
+
+     <target name="sonar:-write-subproject-properties" if="subproject">
+        <ea:parameter property="sonar.subproject.property.file" default="sonar.properties" description="path to generated property file for sonar submodules" />
+        <ea:parameter property="sonar.subproject.property.regex" default="sonar.*" description="regex used to filter properties in generated ${sonar.subproject.property.file}" />
+        <echoproperties destfile="${sonar.subproject.property.file}" regex="${sonar.subproject.property.regex}"/>
      </target>
      
      <target name="sonar:sonar" depends="sonar:init">

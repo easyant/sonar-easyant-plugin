@@ -40,7 +40,20 @@
         <property name="ivy.version" value="1.0"/>
     </target>
     <target name="tearDown" depends="clean"/>
-    
+
+    <macrodef name="assertPropertyNotSet" backtrace="false">
+       <attribute name="name"/>
+       <attribute name="message"
+          default="Expected property '@{name}'"/>
+       <sequential>
+           <au:fail message="@{message}">
+               <not>
+                   <isset property="@{name}"/>
+               </not>
+           </au:fail>
+       </sequential>
+    </macrodef>
+ 
     <!-- init test case -->         
     <target name="test-sonar:init-root-project" depends="sonar:init-root-project">
         <au:assertPropertyEquals name="sonar.host.url" value="http://localhost:9000"/>
@@ -58,6 +71,8 @@
         <au:assertPropertyEquals name="sonar.language" value="java"/>
         <au:assertPropertyEquals name="sonar.sources" value="${basedir}/src"/>
         <au:assertPropertyEquals name="sonar.importSources" value="true"/>
+        <au:assertReferenceSet refid="sonar.subproject.fileset"/>
+        <au:assertPropertyEquals name="sonar.modules" value=""/>
     </target>
 
     <target name="mock-subproject">
@@ -65,9 +80,13 @@
     </target>
 
     <target name="test-sonar:init-subproject" depends="mock-subproject,sonar:init">
-         <au:assertFalse>
-             <isset property="sonar.host.url" />
-         </au:assertFalse>
+         <assertPropertyNotSet name="sonar.host.url"/>
+         <assertPropertyNotSet name="sonar.jdbc.driverClassName"/>
+         <assertPropertyNotSet name="sonar.jdbc.url"/>
+         <assertPropertyNotSet name="sonar.jdbc.username"/>
+         <assertPropertyNotSet name="sonar.jdbc.password"/>
+         <assertPropertyNotSet name="sonar.jdbc.projectKey"/>
+         <assertPropertyNotSet name="sonar.jdbc.projectVersion"/>
     </target>
 
     <target name="test-sonar:sonar">
