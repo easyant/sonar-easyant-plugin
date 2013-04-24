@@ -60,6 +60,16 @@
         <au:assertPropertyEquals name="sonar.importSources" value="true"/>
     </target>
 
+    <target name="mock-subproject">
+        <property name="subproject" value="true"/>
+    </target>
+
+    <target name="test-sonar:init-subproject" depends="mock-subproject,sonar:init">
+         <au:assertFalse>
+             <isset property="sonar.host.url" />
+         </au:assertFalse>
+    </target>
+
     <target name="test-sonar:sonar">
         <au:expectfailure expectedmessage="java.lang.IllegalStateException: Fail to request server version">
             <antcall target="sonar:sonar"/>
