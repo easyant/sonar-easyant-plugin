@@ -18,7 +18,7 @@
 
     <ea:core-version requiredrevision="[0.9,+]" />
 
-    <target name="sonar:init">
+    <target name="sonar:init-root-project" unless="subproject">
         <ea:parameter property="sonar.host.url" default="http://localhost:9000" description="sonar server URL" />
         <ea:parameter property="sonar.jdbc.driverClassName" default="org.h2.Driver" description="JDBC Driver used by Sonar"/>
         <ea:parameter property="sonar.jdbc.url" default="jdbc:h2:tcp://localhost:9092/sonar" description="JDBC Connection URL" />
@@ -27,6 +27,10 @@
 
         <ea:parameter property="sonar.projectKey" default="${ivy.organisation}:${ivy.module}" description="The project key that is unique for each project." />
         <ea:parameter property="sonar.projectVersion" default="${ivy.version}" description="The project version" />
+        
+    </target>
+
+    <target name="sonar:init" depends="sonar:init-root-project">
         <ea:parameter property="sonar.projectName" default="${sonar.projectKey}" description="Name of the project that will be displayed on the web interface"/>
         <ea:parameter property="sonar.language" default="java" description="Sets the language of source code. If a Sonar plugin allows to analyze another language, the associated source code analyser can be activated with this property.
 The default language can be set at instance level: go to Configuration - General Settings - General and set the sonar.language property"/>
@@ -48,5 +52,4 @@ The list of available encodings depends on your JVM. See http://docs.oracle.com/
      <target name="sonar:sonar" depends="sonar:init">
         <sonar/>
      </target>
-
  </project>

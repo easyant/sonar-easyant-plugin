@@ -42,7 +42,7 @@
     <target name="tearDown" depends="clean"/>
     
     <!-- init test case -->         
-    <target name="test-sonar:init" depends="sonar:init">
+    <target name="test-sonar:init-root-project" depends="sonar:init-root-project">
         <au:assertPropertyEquals name="sonar.host.url" value="http://localhost:9000"/>
         <au:assertPropertyEquals name="sonar.jdbc.driverClassName" value="org.h2.Driver"/>
         <au:assertPropertyEquals name="sonar.jdbc.url" value="jdbc:h2:tcp://localhost:9092/sonar"/>
@@ -51,12 +51,15 @@
 
         <au:assertPropertyEquals name="sonar.projectKey" value="${ivy.organisation}:${ivy.module}"/>
         <au:assertPropertyEquals name="sonar.projectVersion" value="${ivy.version}"/>
+    </target>
+   
+    <target name="test-sonar:init" depends="sonar:init">
         <au:assertPropertyEquals name="sonar.projectName" value="${sonar.projectKey}"/>
         <au:assertPropertyEquals name="sonar.language" value="java"/>
         <au:assertPropertyEquals name="sonar.sources" value="${basedir}/src"/>
         <au:assertPropertyEquals name="sonar.importSources" value="true"/>
     </target>
-   
+
     <target name="test-sonar:sonar">
         <au:expectfailure expectedmessage="java.lang.IllegalStateException: Fail to request server version">
             <antcall target="sonar:sonar"/>
