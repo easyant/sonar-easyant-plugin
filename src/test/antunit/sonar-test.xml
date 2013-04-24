@@ -89,6 +89,12 @@
          <assertPropertyNotSet name="sonar.jdbc.projectVersion"/>
     </target>
 
+    <target name="test-sonar:write-subproject-properties" depends="mock-subproject,-sonar:write-subproject-properties">
+        <au:assertPropertyEquals name="sonar.subproject.property.file" value="sonar.properties"/>
+        <au:assertPropertyEquals name="sonar.subproject.property.regex" value="sonar.*"/>
+        <au:assertFileExists file="${sonar.subproject.property.file}"/>
+    </target>
+
     <target name="test-sonar:sonar">
         <au:expectfailure expectedmessage="java.lang.IllegalStateException: Fail to request server version">
             <antcall target="sonar:sonar"/>

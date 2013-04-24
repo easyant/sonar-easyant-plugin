@@ -54,7 +54,7 @@ The list of available encodings depends on your JVM. See http://docs.oracle.com/
         </pathconvert>
      </target>
 
-     <target name="sonar:-write-subproject-properties" if="subproject">
+     <target name="-sonar:write-subproject-properties" if="subproject">
         <ea:parameter property="sonar.subproject.property.file" default="sonar.properties" description="path to generated property file for sonar submodules" />
         <ea:parameter property="sonar.subproject.property.regex" default="sonar.*" description="regex used to filter properties in generated ${sonar.subproject.property.file}" />
         <echoproperties destfile="${sonar.subproject.property.file}" regex="${sonar.subproject.property.regex}"/>
