@@ -34,12 +34,12 @@
         <ea:parameter property="sonar.projectName" default="${sonar.projectKey}" description="Name of the project that will be displayed on the web interface"/>
         <ea:parameter property="sonar.language" default="java" description="Sets the language of source code. If a Sonar plugin allows to analyze another language, the associated source code analyser can be activated with this property.
 The default language can be set at instance level: go to Configuration - General Settings - General and set the sonar.language property"/>
-        <ea:parameter property="sonar.sources" default="${basedir}/src" description="Comma-separated paths to directories containing sources" />
+        <ea:parameter property="sonar.sources" default="src/main/java" description="Comma-separated paths to directories containing sources" />
         <ea:parameter property="sonar.importSources" default="true" description="Sometimes, for security or other reasons, project sources must not be stored and displayed" />
  
         <!-- list of optional Sonar properties -->
-        <ea:parameter property="sonar.binaries" description="Comma-separated paths to directories containing binaries (in case of Java: directories with class files)" required="false"/>
-        <ea:parameter property="sonar.tests" description="Comma-separated paths to directories containing tests" required="false"/>
+        <ea:parameter property="sonar.binaries" default="target/main/classes" description="Comma-separated paths to directories containing binaries (in case of Java: directories with class files)" required="false"/>
+        <ea:parameter property="sonar.tests" default="src/test/java" description="Comma-separated paths to directories containing tests" required="false"/>
         <ea:parameter property="sonar.sourceEncoding" description="Encoding of source files. Example of values: UTF-8, MacRoman, Shift_JIS. This property can be replaced by the standard property project.build.sourceEncoding in Maven projects.
 The list of available encodings depends on your JVM. See http://docs.oracle.com/javase/1.5.0/docs/guide/intl/encoding.doc.html" required="false"/>
         <ea:parameter property="sonar.profile" description="Sometimes, for security or other reasons, project sources must not be stored and displayed" required="false"/>
@@ -60,7 +60,9 @@ The list of available encodings depends on your JVM. See http://docs.oracle.com/
         <echoproperties destfile="${sonar.subproject.property.file}" regex="${sonar.subproject.property.regex}"/>
      </target>
      
-     <target name="sonar:sonar" depends="sonar:init">
+     <target name="-sonar:sonar" depends="sonar:init" unless="subproject">
         <sonar/>
      </target>
+
+     <target name="sonar:sonar" depends="sonar:init,-sonar:sonar,-sonar:write-subproject-properties"/>
  </project>
