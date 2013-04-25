@@ -14,92 +14,90 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<project name="org.apache.easyant.plugins;sonar-test" 
-    xmlns:au="antlib:org.apache.ant.antunit" 
-    xmlns:ivy="antlib:org.apache.ivy.ant"
-    xmlns:ea="antlib:org.apache.easyant">
-    
-    <!-- Import your plugin --> 
-    <property name="target" value="target/test-antunit"/>
-    <!-- configure easyant in current project -->
-    <ea:configure-easyant-ivy-instance />
-    <!-- import our local plugin -->
-    <ea:import-test-module moduleIvy="../../../module.ivy" sourceDirectory="../../main/resources"/>
-    
-    <!-- Defines a setUp / tearDown (before each test) that cleans the environnement --> 
-    <target name="clean" description="remove stale build artifacts before / after each test">
-        <delete dir="${basedir}" includeemptydirs="true">
-            <include name="**/target/**"/>
-            <include name="**/lib/**"/>
-        </delete>
-    </target>
-    
-    <target name="setUp" depends="clean">
-        <property name="ivy.organisation" value="org.mycompany"/>
-        <property name="ivy.module" value="mymodule"/>
-        <property name="ivy.version" value="1.0"/>
-    </target>
-    <target name="tearDown" depends="clean"/>
+<project name="org.apache.easyant.plugins;sonar-test" xmlns:au="antlib:org.apache.ant.antunit" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:ea="antlib:org.apache.easyant">
 
-    <macrodef name="assertPropertyNotSet" backtrace="false">
-       <attribute name="name"/>
-       <attribute name="message"
-          default="Expected property '@{name}'"/>
-       <sequential>
-           <au:fail message="@{message}">
-               <not>
-                   <isset property="@{name}"/>
-               </not>
-           </au:fail>
-       </sequential>
-    </macrodef>
- 
-    <!-- init test case -->         
-    <target name="test-sonar:init-root-project" depends="sonar:init-root-project">
-        <au:assertPropertyEquals name="sonar.host.url" value="http://localhost:9000"/>
-        <au:assertPropertyEquals name="sonar.jdbc.driverClassName" value="org.h2.Driver"/>
-        <au:assertPropertyEquals name="sonar.jdbc.url" value="jdbc:h2:tcp://localhost:9092/sonar"/>
-        <au:assertPropertyEquals name="sonar.jdbc.username" value="sonar"/>
-        <au:assertPropertyEquals name="sonar.jdbc.password" value="sonar"/>
+	<!-- Import your plugin -->
+	<property name="target" value="target/test-antunit" />
+	<!-- configure easyant in current project -->
+	<ea:configure-easyant-ivy-instance />
+	<!-- import our local plugin -->
+	<ea:import-test-module moduleIvy="../../../module.ivy" sourceDirectory="../../main/resources" />
 
-        <au:assertPropertyEquals name="sonar.projectKey" value="${ivy.organisation}:${ivy.module}"/>
-        <au:assertPropertyEquals name="sonar.projectVersion" value="${ivy.version}"/>
-    </target>
-   
-    <target name="test-sonar:init" depends="sonar:init">
-        <au:assertPropertyEquals name="sonar.projectName" value="${sonar.projectKey}"/>
-        <au:assertPropertyEquals name="sonar.language" value="java"/>
-        <au:assertPropertyEquals name="sonar.sources" value="src/main/java"/>
-        <au:assertPropertyEquals name="sonar.importSources" value="true"/>
-        <au:assertPropertyEquals name="sonar.binaries" value="target/main/classes"/>
-        <au:assertPropertyEquals name="sonar.tests" value="src/test/java"/>
-        <au:assertReferenceSet refid="sonar.subproject.fileset"/>
-        <au:assertPropertyEquals name="sonar.modules" value=""/>
-    </target>
+	<!-- Defines a setUp / tearDown (before each test) that cleans the environnement -->
+	<target name="clean" description="remove stale build artifacts before / after each test">
+		<delete dir="${basedir}" includeemptydirs="true">
+			<include name="**/target/**" />
+			<include name="**/lib/**" />
+		</delete>
+	</target>
 
-    <target name="mock-subproject">
-        <property name="subproject" value="true"/>
-    </target>
+	<target name="setUp" depends="clean">
+		<property name="ivy.organisation" value="org.mycompany" />
+		<property name="ivy.module" value="mymodule" />
+		<property name="ivy.version" value="1.0" />
+	</target>
+	<target name="tearDown" depends="clean" />
 
-    <target name="test-sonar:init-subproject" depends="mock-subproject,sonar:init">
-         <assertPropertyNotSet name="sonar.host.url"/>
-         <assertPropertyNotSet name="sonar.jdbc.driverClassName"/>
-         <assertPropertyNotSet name="sonar.jdbc.url"/>
-         <assertPropertyNotSet name="sonar.jdbc.username"/>
-         <assertPropertyNotSet name="sonar.jdbc.password"/>
-         <assertPropertyNotSet name="sonar.jdbc.projectKey"/>
-         <assertPropertyNotSet name="sonar.jdbc.projectVersion"/>
-    </target>
+	<macrodef name="assertPropertyNotSet" backtrace="false">
+		<attribute name="name" />
+		<attribute name="message" default="Expected property '@{name}'" />
+		<sequential>
+			<au:fail message="@{message}">
+				<not>
+					<isset property="@{name}" />
+				</not>
+			</au:fail>
+		</sequential>
+	</macrodef>
 
-    <target name="test-sonar:write-subproject-properties" depends="mock-subproject,-sonar:write-subproject-properties">
-        <au:assertPropertyEquals name="sonar.subproject.property.file" value="sonar.properties"/>
-        <au:assertPropertyEquals name="sonar.subproject.property.regex" value="sonar.*"/>
-        <au:assertFileExists file="${sonar.subproject.property.file}"/>
-    </target>
+	<!-- init test case -->
+	<target name="test-sonar:init" depends="sonar:init">
+		<au:assertPropertyEquals name="sonar.projectName" value="${sonar.projectKey}" />
+		<au:assertPropertyEquals name="sonar.importSources" value="true" />
+		<au:assertPropertyEquals name="sonar.language" value="java" />
+		<au:assertPropertyEquals name="sonar.sources" value="src/main/java" />
+		<au:assertPropertyEquals name="sonar.binaries" value="target/main/classes" />
+		<au:assertPropertyEquals name="sonar.tests" value="src/test/java" />
+		<au:assertReferenceSet refid="sonar.subproject.fileset" />
+		<au:assertPropertyEquals name="sonar.modules" value="" />
+	</target>
 
-    <target name="test-sonar:sonar">
-        <au:expectfailure expectedmessage="java.lang.IllegalStateException: Fail to request server version">
-            <antcall target="sonar:sonar"/>
-        </au:expectfailure>
-    </target>
+	<target name="test-sonar:init-root-project" depends="sonar:init-root-project">
+		<au:assertPropertyEquals name="sonar.host.url" value="http://localhost:9000" />
+		<au:assertPropertyEquals name="sonar.jdbc.driverClassName" value="org.h2.Driver" />
+		<au:assertPropertyEquals name="sonar.jdbc.url" value="jdbc:h2:tcp://localhost:9092/sonar" />
+		<au:assertPropertyEquals name="sonar.jdbc.username" value="sonar" />
+		<au:assertPropertyEquals name="sonar.jdbc.password" value="sonar" />
+
+		<au:assertPropertyEquals name="sonar.projectKey" value="${ivy.organisation}:${ivy.module}" />
+		<au:assertPropertyEquals name="sonar.projectVersion" value="${ivy.revision}" />
+	</target>
+
+
+	<target name="mock-subproject">
+		<property name="subproject" value="true" />
+	</target>
+
+	<target name="test-sonar:init-subproject" depends="mock-subproject,sonar:init">
+		<!-- ensure not set in case of subproject -->
+		<assertPropertyNotSet name="sonar.host.url" />
+		<assertPropertyNotSet name="sonar.jdbc.driverClassName" />
+		<assertPropertyNotSet name="sonar.jdbc.url" />
+		<assertPropertyNotSet name="sonar.jdbc.username" />
+		<assertPropertyNotSet name="sonar.jdbc.password" />
+		<assertPropertyNotSet name="sonar.jdbc.projectKey" />
+		<assertPropertyNotSet name="sonar.jdbc.projectVersion" />
+	</target>
+
+	<target name="test-sonar:subproject" depends="mock-subproject,-sonar:subproject">
+		<au:assertPropertyEquals name="sonar.subproject.property.file" value="sonar.properties" />
+		<au:assertPropertyEquals name="sonar.subproject.property.regex" value="sonar.*" />
+		<au:assertFileExists file="${sonar.subproject.property.file}" />
+	</target>
+
+	<target name="test-sonar:root-project">
+		<au:expectfailure expectedmessage="java.lang.IllegalStateException: Fail to request server version">
+			<antcall target="-sonar:root-project" />
+		</au:expectfailure>
+	</target>
 </project>
