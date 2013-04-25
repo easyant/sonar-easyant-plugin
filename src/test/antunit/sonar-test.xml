@@ -57,7 +57,10 @@
 		<au:assertPropertyEquals name="sonar.language" value="java" />
 		<au:assertPropertyEquals name="sonar.sources" value="src/main/java" />
 		<au:assertPropertyEquals name="sonar.binaries" value="target/main/classes" />
-		<au:assertPropertyEquals name="sonar.tests" value="src/test/java" />
+		<au:assertPropertyEquals name="sonar.tests" value="src/test/java,src/integration-test/java" />
+		<au:assertPropertyEquals name="sonar.dynamicAnalysis" value="reuseReports" />
+		<au:assertPropertyEquals name="sonar.surefire.reportsPath" value="target/test/xml" />
+		        
 		<au:assertReferenceSet refid="sonar.subproject.fileset" />
 		<au:assertPropertyEquals name="sonar.modules" value="" />
 	</target>
