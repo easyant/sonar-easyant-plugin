@@ -48,6 +48,9 @@ The list of available encodings depends on your JVM. See http://docs.oracle.com/
         <ea:parameter property="sonar.surefire.reportsPath" default="target/test/xml"
             description="Tell Sonar where your unit tests execution reports are: absolute or relative path to the directory containing your reports" />
 
+        <ea:parameter property="sonar.java.coveragePlugin" default="jacoco"
+            description="tell Sonar which code coverage engine has been used to generate the reports: jacoco or cobertura or emma or clover"/>
+
         <!-- see http://docs.codehaus.org/display/SONAR/Analysis+Parameters to have exhaustive list of properties available -->
 
         <taskdef resource="org/sonar/ant/antlib.xml" classpathref="org.apache.easyant.plugins#sonar.classpath" />

@@ -60,6 +60,7 @@
 		<au:assertPropertyEquals name="sonar.tests" value="src/test/java,src/integration-test/java" />
 		<au:assertPropertyEquals name="sonar.dynamicAnalysis" value="reuseReports" />
 		<au:assertPropertyEquals name="sonar.surefire.reportsPath" value="target/test/xml" />
+		<au:assertPropertyEquals name="sonar.java.coveragePlugin" value="jacoco"/>
 		        
 		<au:assertReferenceSet refid="sonar.subproject.fileset" />
 		<au:assertPropertyEquals name="sonar.modules" value="" />
