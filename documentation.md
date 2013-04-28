@@ -1,9 +1,11 @@
-# Documentation ::  by sonarorg.apache.easyant.plugins
+# Documentation :: sonar by org.apache.easyant.plugins
+
 # Description
 
 This module provides integration with sonar, a web based platform monitoring code quality.
 
 # Example
+
 ```xml
 <ea:plugin organisation="org.apache.easyant.plugins" module="sonar" revision="1.0"/>
 ```
@@ -49,3 +51,16 @@ Organisation attribute is optional. If not specified default one will be used.
 |sonar.projectKey|The project key that is unique for each project.|false|${ivy.organisation}:${ivy.module}|
 |sonar.projectName|Name of the project that will be displayed on the web interface|false|${sonar.projectKey}|
 |sonar.subproject.property.regex|regex used to filter properties in generated ${sonar.subproject.property.file}|false|sonar.*|
+
+## Ivy Configurations
+
+|name|description|extends|visibility|deprecated|
+|----|-----------|-------|----------|----------|
+|default|runtime dependencies artifact can be used with this conf|[]|public|null|
+|test|this scope indicates that the dependency is not required for normal use of the application, and is only available for the test compilation and execution phases.|[]|public|null|
+|provided|this is much like compile, but indicates you expect the JDK or a container to provide it. It is only available on the compilation classpath, and is not transitive.|[]|public|null|
+
+## Dependencies Overview
+
+|Organisation|Module|Revision|
+|org.codehaus.sonar-plugins|sonar-ant-task|2.0|
