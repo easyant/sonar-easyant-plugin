@@ -64,4 +64,5 @@ Organisation attribute is optional. If not specified default one will be used.
 ## Dependencies Overview
 
 |Organisation|Module|Revision|
+|------------|------|--------|
 |org.codehaus.sonar-plugins|sonar-ant-task|2.0|
